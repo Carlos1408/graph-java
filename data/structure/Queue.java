@@ -1,28 +1,26 @@
 package data.structure;
 
-import java.util.LinkedList;
-
 public class Queue {
-    LinkedList elements;
+    ListLinked elements;
     int size, limit;
 
     public Queue()
     {
-        this.elements = new LinkedList();
+        this.elements = new ListLinked<>();
         this.size = 0;
         this.limit = 10;
     }
 
     public Queue(int limit)
     {
-        this.elements = new LinkedList();
+        this.elements = new ListLinked<>();
         this.size = 0;
         this.limit = limit;
     }
 
     public boolean isEmpty()
     {
-        if(elements.getFirst()==null)
+        if(elements.getHead()==null)
             return true;
         else
             return false;
@@ -40,7 +38,7 @@ public class Queue {
     {
         if(!isFull())
         {
-            elements.addFirst(aux);
+            elements.addHead(aux);
             size++;
         }else
             System.out.println("COLA LLENA");
@@ -50,7 +48,7 @@ public class Queue {
     {
         Object aux = null;
         if(!isEmpty())
-            aux = elements.getLast();
+            aux = elements.getTail();
         else
             System.out.println("COLA VACIA");
         return aux;
@@ -61,8 +59,8 @@ public class Queue {
         Object aux = null;
         if(!isEmpty())
         {
-            aux = elements.getLast();
-            elements.removeLast();
+            aux = elements.getTail();
+            elements.removeTail();
             size--;
         }else
             System.out.println("COLA VACIA");

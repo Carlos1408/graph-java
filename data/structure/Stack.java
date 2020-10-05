@@ -1,15 +1,13 @@
 package data.structure;
 
-import java.util.LinkedList;
-
 public class Stack {
-    private LinkedList elements;
+    private ListLinked elements;
     private int size, limit;
     private Object top;
 
     public Stack()
     {
-        this.elements = new LinkedList();
+        this.elements = new ListLinked();
         this.size = 0;
         this.top = null;
         this.limit = 10;
@@ -17,7 +15,7 @@ public class Stack {
 
     public Stack(int limit)
     {
-        this.elements = new LinkedList();
+        this.elements = new ListLinked();
         this.size = 0;
         this.top = null;
         this.limit = limit;
@@ -49,7 +47,7 @@ public class Stack {
         if(!isFull())
         {
             top = element;
-            elements.addFirst(element);
+            elements.addHead(element);
             size++;
         }else
             System.out.println("PILA LLENA");
@@ -61,7 +59,7 @@ public class Stack {
         {
             Object aux;
             aux = top;
-            elements.remove();
+            elements.removeHead();
             size--;
             System.out.println("Se extrajo el elemento: "+aux);
         }else
@@ -76,12 +74,6 @@ public class Stack {
                 System.out.println("|"+elements.get(i)+"|");
         }else
             System.out.println("PILA VACIA");
-    }
-    public void clearStack()
-    {
-        elements.clear();
-        size = 0;
-        top = null;
     }
 
     public Object getTop()
