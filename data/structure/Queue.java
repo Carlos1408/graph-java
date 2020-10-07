@@ -1,7 +1,7 @@
 package data.structure;
 
 public class Queue {
-    ListLinked elements;
+    ListLinked<Object> elements;
     int size, limit;
 
     public Queue()

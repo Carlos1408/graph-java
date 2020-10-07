@@ -1,13 +1,13 @@
 package data.structure;
 
 public class Stack {
-    private ListLinked elements;
+    private ListLinked<Object> elements;
     private int size, limit;
     private Object top;
 
     public Stack()
     {
-        this.elements = new ListLinked();
+        this.elements = new ListLinked<>();
         this.size = 0;
         this.top = null;
         this.limit = 10;
@@ -15,7 +15,7 @@ public class Stack {
 
     public Stack(int limit)
     {
-        this.elements = new ListLinked();
+        this.elements = new ListLinked<>();
         this.size = 0;
         this.top = null;
         this.limit = limit;

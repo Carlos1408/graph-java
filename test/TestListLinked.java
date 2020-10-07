@@ -5,7 +5,7 @@ import data.structure.ListLinked;
 public class TestListLinked {
 
     static void testAddHeadList() {
-        ListLinked list = new ListLinked();
+        ListLinked<Integer> list = new ListLinked<>();
         list.addHead(5);
         list.addHead(8);
         list.addHead(15);
@@ -14,12 +14,31 @@ public class TestListLinked {
         System.out.println(list);
     }
     static void testAddTailList() {
-        ListLinked list = new ListLinked();
+        ListLinked<Integer> list = new ListLinked<>();
         list.addTail(5);
         list.addTail(8);
         list.addTail(15);
         list.addTail(0);
         list.addTail(10);
+        System.out.println(list);
+    }
+
+    static void testAddListStrings()
+    {
+        ListLinked<String> list = new ListLinked<>();
+        list.add("Jesus");
+        list.add("Carlos");
+        list.add("Sebastian");
+        System.out.println(list);
+    }
+
+    static void testAddTailListBooleans() {
+        ListLinked<Boolean> list = new ListLinked<>();
+        list.addTail(true);
+        list.addTail(false);
+        list.addTail(true);
+        list.addTail(true);
+        list.addTail(false);
         System.out.println(list);
     }
 

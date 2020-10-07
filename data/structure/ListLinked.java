@@ -1,11 +1,9 @@
 package data.structure;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class ListLinked<E> {
-    Node<E> head;
-    Node<E> tail;
-    int size;
+    private Node<E> head;
+    private Node<E> tail;
+    private int size;
 
     public ListLinked() {
         head = tail = null;
@@ -16,7 +14,7 @@ public class ListLinked<E> {
         return head == null;
     }
 
-    public void addHead(Object data) {
+    public void addHead(E data) {
         Node<E> node = new Node<E>(data);
         if (isEmpty()) {
             tail = node;
@@ -26,7 +24,7 @@ public class ListLinked<E> {
         size++;
     }
 
-    public void addTail(Object data) {
+    public void addTail(E data) {
         Node<E> node = new Node<>(data);
         if (isEmpty()) {
             head = node;
@@ -37,7 +35,7 @@ public class ListLinked<E> {
         size++;
     }
 
-    public void add(Object data)
+    public void add(E data)
     {
         Node<E> node = new Node<>(data);
         if (isEmpty()) {
@@ -57,7 +55,7 @@ public class ListLinked<E> {
 
     public void removeTail()
     {
-        Node aux=null;
+        Node<E> aux=null;
         if(!isEmpty())
         {
             while(aux.getLink()!=tail)
@@ -67,11 +65,11 @@ public class ListLinked<E> {
         }
     }
 
-    public Object get(int j)
+    public E get(int j)
     {
-        Node aux=null;
+        Node<E> aux=null;
         int i=0;
-        Object data=null;
+        E data=null;
         if(!isEmpty())
         {
             aux = head;
