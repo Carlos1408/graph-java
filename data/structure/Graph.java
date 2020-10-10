@@ -22,7 +22,7 @@ public class Graph {
     public Graph(boolean directed, int numVertexs)
     {
         this.directed = directed;
-        vertexs = new Vertex[numVertexs];
+        this.vertexs = new Vertex[numVertexs];
     }
 
     public boolean getDirected()
@@ -50,6 +50,18 @@ public class Graph {
         vertexList.add(vertex);
     }
 
+    public void printGraph()
+    {
+        ListLinked<Edge> edgesVertex = new ListLinked<>();
+        for(int i=0; i < vertexs.length; i++)
+        {
+            System.out.print("\nVERTEX= "+vertexs[i].getLabel()+"| LINKS");
+            edgesVertex = vertexs[i].getEdges();
+            for(int j=0; j<edgesVertex.size(); j++)
+                System.out.print(" -> "+edgesVertex.getNode(j).getData().getV2().getLabel()+"("+edgesVertex.getNode(j).getData().getWeight()+")");
+        }
+    }
+
     public void addEdge(Vertex v1, Vertex v2, double weight)
     {
         Edge edge = new Edge(v1, v2, weight);
@@ -64,23 +76,24 @@ public class Graph {
     public void readFileInput(String filename)
     {
         String path = System.getProperty("user.dir")+"\\input\\"+filename;
+        String line="";
         try
         {
             File file = new File(path);
             Scanner scanner = new Scanner(file);
-            String line="";
             Pattern pattern = Pattern.compile("size\\s*=\\s*(\\d+)");
+            line = scanner.nextLine();
             Matcher matcher = pattern.matcher(line);
             matcher.find();
             String strSize = matcher.group(1);
             vertexs = new Vertex[Integer.parseInt(strSize)];
             //Obteniendo las lineas de informacion de vertices
-            while(!(line = scanner.nextLine()).equals(";"))
+            while(!((line = scanner.nextLine()).equals(";")))
             {
                 pattern = Pattern.compile("(\\d+)\\s*=\\s*(.+)");
                 matcher = pattern.matcher(line);
                 //boolean resp = matcher.find();
-                if(!matcher.find())
+                if(matcher.find())
                 {
                     Vertex vertex = new Vertex(matcher.group(2));
                     addVertex(vertex);
@@ -90,17 +103,16 @@ public class Graph {
             //Obteniendo las lineas de informacion de aristas
             while(!(line = scanner.nextLine()).equals(";"))
             {
-                pattern = Pattern.compile("\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+,?\\d*)\\s*\\)");
+                pattern = Pattern.compile("\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)");
                 matcher = pattern.matcher(line);
                 //boolean resp = matcher.find();
-                if(!matcher.find())
+                if(matcher.find())
                 {
                     int posV1 = Integer.parseInt(matcher.group(1));
                     int posV2 = Integer.parseInt(matcher.group(2));
                     double weight = Double.parseDouble(matcher.group(3));
                     Vertex v1 = vertexs[posV1];
                     Vertex v2 = vertexs[posV2];
-                    //Edge edge = new Edge(v1, v2, weight);
                     addEdge(v1, v2, weight);
                 }
             }
@@ -113,7 +125,7 @@ public class Graph {
 
     public static void main(String[] args) {
         Graph graph = new Graph(false);
-        Vertex LaPaz = new Vertex("La Paz");
+        /*Vertex LaPaz = new Vertex("La Paz");
         Vertex Cochabamba = new Vertex("Cochabamba");
         Vertex SantaCruz = new Vertex("Santa Cruz");
         Vertex Riberalta = new Vertex("Riberalta");
@@ -124,8 +136,9 @@ public class Graph {
         graph.addVertex(LaPaz);
         graph.addVertex(Cochabamba);
         graph.addVertex(SantaCruz);
-        graph.addVertex(Riberalta);
+        graph.addVertex(Riberalta);*/
 
         graph.readFileInput("bolivia.txt");
+        graph.printGraph();
     }
 }

@@ -65,22 +65,20 @@ public class ListLinked<E> {
         }
     }
 
-    public E get(int j)
+    public Node<E> getNode(int j)
     {
-        Node<E> aux=null;
+        Node<E> aux=head;
         int i=0;
-        E data=null;
         if(!isEmpty())
         {
-            aux = head;
-            while(aux!=null)
+            while(aux.getLink()!=null)
             {
                 if(j==i)
-                    data=aux.getData();
+                    break;
                 aux = aux.getLink();
             }
         }
-        return data;
+        return aux;
     }
     
     public Node<E> getHead()

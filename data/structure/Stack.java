@@ -71,7 +71,7 @@ public class Stack {
         if(!isEmpty())
         {
             for(int i=0; i<size; i++)
-                System.out.println("|"+elements.get(i)+"|");
+                System.out.println("|"+elements.getNode(i).getData()+"|");
         }else
             System.out.println("PILA VACIA");
     }
