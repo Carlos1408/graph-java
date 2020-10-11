@@ -57,6 +57,7 @@ public class Graph {
         {
             System.out.print("\nVERTEX= "+vertexs[i].getLabel()+"| LINKS");
             edgesVertex = vertexs[i].getEdges();
+            //edgesVertex = vertexList.getNode(i).getData().getEdges();
             for(int j=0; j<edgesVertex.size(); j++)
                 System.out.print(" -> "+edgesVertex.getNode(j).getData().getV2().getLabel()+"("+edgesVertex.getNode(j).getData().getWeight()+")");
         }

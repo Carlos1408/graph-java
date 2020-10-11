@@ -76,6 +76,7 @@ public class ListLinked<E> {
                 if(j==i)
                     break;
                 aux = aux.getLink();
+                i++;
             }
         }
         return aux;
