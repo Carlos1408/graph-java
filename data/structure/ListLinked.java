@@ -56,12 +56,26 @@ public class ListLinked<E> {
     public void removeTail()
     {
         Node<E> aux=null;
+        Node<E> prev=null;
         if(!isEmpty())
         {
-            while(aux.getLink()!=tail)
-                aux=aux.getLink();
-            aux.setLink(null);
-            tail = aux;
+            aux = head;
+            if(aux.getLink()==null)
+            {
+                if(aux == head)
+                {
+                    head = null;
+                    tail = null;
+                }
+                else
+                {
+                    prev.setLink(null);
+                    prev = tail;
+                }
+                size--;
+            }
+            prev = aux;
+            aux = aux.getLink();
         }
     }
 
@@ -89,7 +103,19 @@ public class ListLinked<E> {
 
     public Node<E> getTail()
     {
-        return tail;
+        Node<E> aux = null;
+        if(!isEmpty())
+        {
+            aux = head;
+            while(aux.getLink()!=null)
+                aux = aux.getLink();
+        }
+        return aux;
+    }
+
+    public void setLink(Node<E> current, Node<E> link)
+    {
+        current.setLink(link);
     }
 
     public int size()

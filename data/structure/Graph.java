@@ -2,6 +2,8 @@ package data.structure;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,6 +50,57 @@ public class Graph {
     public void addVertex(Vertex vertex)
     {
         vertexList.add(vertex);
+    }
+
+    public void BFS(Vertex vertex)
+    {
+        ListLinked<Vertex> travelBFS = new ListLinked<>();
+        //Queue<Vertex> queue = new Queue<>();
+        Queue<Vertex> queue = new LinkedList<>();
+        queue.add(vertex);
+        vertex.setStatus(State.VISITED);
+        travelBFS.add(vertex);
+        while(!queue.isEmpty())
+        {
+            //vertex = queue.remove().getData();
+            vertex = queue.poll();
+            ListLinked<Edge> lEdges = vertex.getEdges();
+            Node<Edge> node = lEdges.getHead();
+            while(node!=null)
+            {
+                Vertex opposite = node.getData().getV2();
+                if(opposite.getState() == State.NOT_VISITED)
+                {
+                    queue.add(opposite);
+                    opposite.setStatus(State.VISITED);
+                    opposite.setJumps(vertex.getJumps()+1);
+                    opposite.setParent(node.getData().getV1());
+                    travelBFS.add(opposite);
+                }
+                node = node.getLink();
+            }
+            vertex.setStatus(State.PROCESSED);
+            //System.out.println(vertex.getLabel());
+        }
+        Node<Vertex> temp = travelBFS.getHead();
+        while (temp!=null) {
+            //System.out.print(temp.getData().getLabel()+"{"+temp.getData().getJumps()+"} ");
+            temp = temp.getLink();
+        }
+    }
+
+    public void shortPath(Vertex start, Vertex finish) {
+        BFS(start);
+        Vertex parent = finish.getParent();
+        while(parent != start.getParent()) {
+            System.out.print(parent.getLabel()+"{"+parent.getJumps()+"} ");
+            parent = parent.getParent();
+        }
+    }
+
+    public void DFS()
+    {
+        
     }
 
     public void printGraph()

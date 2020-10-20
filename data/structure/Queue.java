@@ -1,14 +1,14 @@
 package data.structure;
 
-public class Queue {
-    ListLinked<Object> elements;
+public class Queue<E> {
+    ListLinked<E> elements;
     int size, limit;
 
     public Queue()
     {
         this.elements = new ListLinked<>();
         this.size = 0;
-        this.limit = 10;
+        this.limit = 100;
     }
 
     public Queue(int limit)
@@ -34,7 +34,7 @@ public class Queue {
             return false;
     }
 
-    public void add(Object aux)
+    public void add(E aux)
     {
         if(!isFull())
         {
@@ -44,9 +44,9 @@ public class Queue {
             System.out.println("COLA LLENA");
     }
 
-    public Object element()
+    public Node<E> element()
     {
-        Object aux = null;
+        Node<E> aux = null;
         if(!isEmpty())
             aux = elements.getTail();
         else
@@ -54,16 +54,15 @@ public class Queue {
         return aux;
     }
 
-    public Object remove()
+    public Node<E> remove()
     {
-        Object aux = null;
+        Node<E> aux = null;
         if(!isEmpty())
         {
             aux = elements.getTail();
             elements.removeTail();
             size--;
-        }else
-            System.out.println("COLA VACIA");
+        }
         return aux;
     }
 }

@@ -1,16 +1,16 @@
 package data.structure;
 
-public class Stack {
-    private ListLinked<Object> elements;
+public class Stack<E> {
+    private ListLinked<E> elements;
     private int size, limit;
-    private Object top;
+    private E top;
 
     public Stack()
     {
         this.elements = new ListLinked<>();
         this.size = 0;
         this.top = null;
-        this.limit = 10;
+        this.limit = 100;
     }
 
     public Stack(int limit)
@@ -42,7 +42,7 @@ public class Stack {
         return size;
     }
 
-    public void push(Object element)
+    public void push(E element)
     {
         if(!isFull())
         {
@@ -57,7 +57,7 @@ public class Stack {
     {
         if(!isEmpty())
         {
-            Object aux;
+            E aux;
             aux = top;
             elements.removeHead();
             size--;
@@ -76,7 +76,7 @@ public class Stack {
             System.out.println("PILA VACIA");
     }
 
-    public Object getTop()
+    public E getTop()
     {
         return top;
     }
