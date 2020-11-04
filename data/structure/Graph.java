@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+//import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,9 +16,14 @@ public class Graph {
     private Vertex[] vertexs;
     private int numVertexs;
 
+    private boolean isConnected;
+    private int componentConnected;
+
     public Graph(boolean directed)
     {
         this.directed = directed;
+        isConnected = false;
+        componentConnected = 0;
         vertexList = new ListLinked<>();
     }
 
@@ -25,6 +31,17 @@ public class Graph {
     {
         this.directed = directed;
         this.vertexs = new Vertex[numVertexs];
+        isConnected = false;
+        componentConnected = 0;
+    }
+
+    public boolean isConnected() {
+        BFS();
+        return isConnected;
+    }
+
+    public int getComponentConnected() {
+        return componentConnected;
     }
 
     public boolean getDirected()
@@ -80,17 +97,31 @@ public class Graph {
                 node = node.getLink();
             }
             vertex.setStatus(State.PROCESSED);
-            //System.out.println(vertex.getLabel());
         }
         Node<Vertex> temp = travelBFS.getHead();
         while (temp!=null) {
-            //System.out.print(temp.getData().getLabel()+"{"+temp.getData().getJumps()+"} ");
+            System.out.print(temp.getData().getLabel()+"{"+temp.getData().getJumps()+"} +["+temp.getData().getParent().getLabel()+"]");
             temp = temp.getLink();
         }
     }
 
+    public void BFS() {
+        Node<Vertex> iterator = vertexList.getHead();
+        isConnected = false;
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            if(vertex.getState().compareTo(State.NOT_VISITED) == 0) {
+                BFS(vertex);
+                componentConnected ++;
+                isConnected = componentConnected == 1;
+            }
+            iterator = iterator.getLink();
+        }
+    }
+
     public void shortPath(Vertex start, Vertex finish) {
-        BFS(start);
+        //BFS(start);
+        DFS(start);
         Vertex parent = finish.getParent();
         while(parent != start.getParent()) {
             System.out.print(parent.getLabel()+"{"+parent.getJumps()+"} ");
@@ -98,9 +129,52 @@ public class Graph {
         }
     }
 
-    public void DFS()
-    {
-        
+    public void DFS(Vertex vertex) {
+        ListLinked<Vertex> travelDFS = new ListLinked<>();
+        Stack<Vertex> stack = new Stack<>();
+        int time = 0;
+        stack.add(vertex);
+        vertex.setStatus(State.VISITED);
+        vertex.setTimeIn(0);
+        travelDFS.add(vertex);
+        while(!stack.isEmpty()) {
+            vertex = stack.pop();
+            vertex.setTimeIn(time);
+            ListLinked<Edge> lEdges = vertex.getEdges();
+            Node<Edge> node = lEdges.getHead();
+            while(node != null) {
+                Vertex opposite = node.getData().getV2();
+                if(opposite.getState() == State.NOT_VISITED) {
+                    time++;
+                    opposite.setStatus(State.VISITED);
+                    opposite.setJumps(vertex.getJumps() + 1);
+                    stack.add(opposite);
+                    travelDFS.add(opposite);
+                }
+                node = node.getLink();
+            }
+            vertex.setStatus(State.PROCESSED);
+            vertex.setTimeOut(time+1);
+        }
+        Node<Vertex> temp = travelDFS.getHead();
+        while (temp!=null) {
+            System.out.print(temp.getData().getLabel()+"{"+temp.getData().getTimeIn()+"; "+temp.getData().getTimeOut()+"} -> ");
+            temp = temp.getLink();
+        }
+    }
+
+    public void DFS() {
+        Node<Vertex> iterator = vertexList.getHead();
+        isConnected = false;
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            if(vertex.getState().compareTo(State.NOT_VISITED) == 0) {
+                DFS(vertex);
+                componentConnected++;
+                isConnected = componentConnected == 1;
+            }
+            iterator = iterator.getLink();
+        }
     }
 
     public void printGraph()

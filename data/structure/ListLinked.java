@@ -70,7 +70,7 @@ public class ListLinked<E> {
                 else
                 {
                     prev.setLink(null);
-                    prev = tail;
+                    tail = prev;
                 }
                 size--;
             }

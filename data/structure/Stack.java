@@ -23,7 +23,7 @@ public class Stack<E> {
 
     public boolean isEmpty()
     {
-        if(top == null)
+        if(size == 0)
             return true;
         else
             return false;
@@ -42,7 +42,7 @@ public class Stack<E> {
         return size;
     }
 
-    public void push(E element)
+    public void add(E element)
     {
         if(!isFull())
         {
@@ -79,5 +79,15 @@ public class Stack<E> {
     public E getTop()
     {
         return top;
+    }
+
+    public E pop() {
+        E aux = null;
+        if(!isEmpty()) {
+            aux = top;
+            elements.removeHead();
+            size--;            
+        }
+        return aux;
     }
 }

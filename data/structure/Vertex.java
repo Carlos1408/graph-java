@@ -6,6 +6,8 @@ public class Vertex {
     private State state;
     private int jumps;
     private Vertex parent;
+    private int timeIn;
+    private int timeOut;
     
     public Vertex(String label)
     {
@@ -13,6 +15,23 @@ public class Vertex {
         edges = new ListLinked<>();
         this.jumps = 0;
         this.state = State.NOT_VISITED;
+        this.timeIn = 0;
+    }
+
+    public void setTimeIn(int time) {
+        timeIn = time;
+    }
+
+    public int getTimeIn() {
+        return timeIn;
+    }
+
+    public void setTimeOut(int time) {
+        timeOut = time;
+    }
+
+    public int getTimeOut() {
+        return timeOut;
     }
 
     public void setParent(Vertex parent) {
