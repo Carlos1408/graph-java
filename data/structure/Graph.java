@@ -207,7 +207,7 @@ public class Graph {
             iterator = iterator.getLink();
         }
     }
-
+/*
     public void printTimes() {
         Node<Vertex> node = vertexList.getHead();
         Vertex vertex;
@@ -217,7 +217,7 @@ public class Graph {
             node = node.getLink();
         }
     }
-
+*/
     public void printGraph()
     {
         ListLinked<Edge> edgesVertex = new ListLinked<>();
