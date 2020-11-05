@@ -15,6 +15,7 @@ public class Graph {
     private ListLinked<Vertex> vertexList;
     private Vertex[] vertexs;
     private int numVertexs;
+    private int time;
 
     private boolean isConnected;
     private int componentConnected;
@@ -132,20 +133,17 @@ public class Graph {
     public void DFS(Vertex vertex) {
         ListLinked<Vertex> travelDFS = new ListLinked<>();
         Stack<Vertex> stack = new Stack<>();
-        int time = 0;
         stack.add(vertex);
         vertex.setStatus(State.VISITED);
         vertex.setTimeIn(0);
         travelDFS.add(vertex);
         while(!stack.isEmpty()) {
             vertex = stack.pop();
-            vertex.setTimeIn(time);
             ListLinked<Edge> lEdges = vertex.getEdges();
             Node<Edge> node = lEdges.getHead();
             while(node != null) {
                 Vertex opposite = node.getData().getV2();
                 if(opposite.getState() == State.NOT_VISITED) {
-                    time++;
                     opposite.setStatus(State.VISITED);
                     opposite.setJumps(vertex.getJumps() + 1);
                     stack.add(opposite);
@@ -154,17 +152,12 @@ public class Graph {
                 node = node.getLink();
             }
             vertex.setStatus(State.PROCESSED);
-            vertex.setTimeOut(time+1);
-        }
-        Node<Vertex> temp = travelDFS.getHead();
-        while (temp!=null) {
-            System.out.print(temp.getData().getLabel()+"{"+temp.getData().getTimeIn()+"; "+temp.getData().getTimeOut()+"} -> ");
-            temp = temp.getLink();
         }
     }
 
     public void DFS() {
         Node<Vertex> iterator = vertexList.getHead();
+        
         isConnected = false;
         while(iterator != null) {
             Vertex vertex = iterator.getData();
@@ -174,6 +167,54 @@ public class Graph {
                 isConnected = componentConnected == 1;
             }
             iterator = iterator.getLink();
+        }
+    }
+
+    public void DFSTimed(Vertex vertex, ListLinked<Vertex> travelDFS) {
+        vertex.setStatus(State.VISITED);
+        travelDFS.add(vertex);
+        ListLinked<Edge> lEdges = vertex.getEdges();
+        vertex.setTimeIn(time);
+        time++;
+        Node<Edge> node = lEdges.getHead();
+        while(node != null) {
+            Vertex opposite = node.getData().getV2();
+            if(opposite.getState() == State.NOT_VISITED)
+                DFSTimed(opposite, travelDFS);
+            node = node.getLink();
+        }
+        vertex.setStatus(State.PROCESSED);
+        vertex.setTimeOut(time);
+        time++;
+        //System.out.println(vertex.getLabel()+"{"+vertex.getTimeIn()+"; "+vertex.getTimeOut()+"}");
+    }
+
+    public void DFSTimed() {
+        time = 0;
+        Node<Vertex> iterator = vertexList.getHead();
+        ListLinked<Vertex> travelDFS = new ListLinked<>();
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            if(vertex.getState().compareTo(State.NOT_VISITED) == 0)
+                DFSTimed(vertex, travelDFS);
+            iterator = iterator.getLink();
+        }
+        
+        iterator = travelDFS.getHead();
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            System.out.print(vertex.getLabel()+"{"+vertex.getTimeIn()+"; "+vertex.getTimeOut()+"}-> ");
+            iterator = iterator.getLink();
+        }
+    }
+
+    public void printTimes() {
+        Node<Vertex> node = vertexList.getHead();
+        Vertex vertex;
+        while(node != null) {
+            vertex = node.getData();
+            System.out.println(vertex.getLabel()+"{"+vertex.getTimeIn()+"; "+vertex.getTimeOut()+"}");
+            node = node.getLink();
         }
     }
 

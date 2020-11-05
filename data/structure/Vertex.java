@@ -15,11 +15,10 @@ public class Vertex {
         edges = new ListLinked<>();
         this.jumps = 0;
         this.state = State.NOT_VISITED;
-        this.timeIn = 0;
     }
 
     public void setTimeIn(int time) {
-        timeIn = time;
+        this.timeIn = time;
     }
 
     public int getTimeIn() {
@@ -27,7 +26,7 @@ public class Vertex {
     }
 
     public void setTimeOut(int time) {
-        timeOut = time;
+        this.timeOut = time;
     }
 
     public int getTimeOut() {
