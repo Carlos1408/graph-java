@@ -94,16 +94,17 @@ public class Graph {
                     opposite.setJumps(vertex.getJumps()+1);
                     opposite.setParent(node.getData().getV1());
                     travelBFS.add(opposite);
+                    //System.out.println(Edge: "("+vertex.getLabel()+", "+opposite.getLabel()+")");
                 }
                 node = node.getLink();
             }
             vertex.setStatus(State.PROCESSED);
         }
-        Node<Vertex> temp = travelBFS.getHead();
+        /*Node<Vertex> temp = travelBFS.getHead();
         while (temp!=null) {
             System.out.print(temp.getData().getLabel()+"{"+temp.getData().getJumps()+"} +["+temp.getData().getParent().getLabel()+"]");
             temp = temp.getLink();
-        }
+        }*/
     }
 
     public void BFS() {
@@ -121,8 +122,8 @@ public class Graph {
     }
 
     public void shortPath(Vertex start, Vertex finish) {
-        //BFS(start);
-        DFS(start);
+        BFS(start);
+        //DFS(start);
         Vertex parent = finish.getParent();
         while(parent != start.getParent()) {
             System.out.print(parent.getLabel()+"{"+parent.getJumps()+"} ");
@@ -145,10 +146,10 @@ public class Graph {
                 Vertex opposite = node.getData().getV2();
                 if(opposite.getState() == State.NOT_VISITED) {
                     opposite.setStatus(State.VISITED);
-                    opposite.setJumps(vertex.getJumps() + 1);
                     stack.add(opposite);
                     travelDFS.add(opposite);
-                }
+                } else if(opposite.getState().compareTo(State.PROCESSED)==0)
+                    node.getData().setType(Type.LATER);
                 node = node.getLink();
             }
             vertex.setStatus(State.PROCESSED);
@@ -186,7 +187,67 @@ public class Graph {
         vertex.setStatus(State.PROCESSED);
         vertex.setTimeOut(time);
         time++;
-        //System.out.println(vertex.getLabel()+"{"+vertex.getTimeIn()+"; "+vertex.getTimeOut()+"}");
+    }
+
+    private boolean BFSArticulated() {
+        Node<Vertex> iterator = vertexList.getHead();
+        int components = 0;
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            if(vertex.getState().compareTo(State.NOT_VISITED) == 0) {
+                BFS(vertex);
+                components++;
+                //System.out.println("componentes: "+components);
+            }
+            iterator = iterator.getLink();
+        }
+        if(components==1)
+            return false;
+        else
+            return true;
+    }
+
+    public void printVertexConections(Vertex vertex) {
+        Node<Edge> iterator = vertex.getEdges().getHead();
+        while(iterator!=null) {
+            System.out.print("Vertex["+iterator.getData().getV2().getLabel()+"] - ");
+            iterator = iterator.getLink();
+        }
+    }
+
+    private void restoreVertexStatus() {
+        Node<Vertex> iterator = vertexList.getHead();
+        while(iterator!=null) {
+            iterator.getData().setStatus(State.NOT_VISITED);
+            iterator = iterator.getLink();
+        }
+    }
+
+    public void printStatus() {
+        Node<Vertex> iterator = vertexList.getHead();
+        while(iterator!=null) {
+            System.out.println(iterator.getData().getLabel()+"{"+iterator.getData().getState()+"}");
+            iterator = iterator.getLink();
+        }
+    }
+
+    public ListLinked<Vertex> getVertexArticulationList() {
+        Node<Vertex> iterator = vertexList.getHead();
+        Vertex vertex = null;
+        Boolean articulationExists = false;
+        ListLinked<Vertex> list = new ListLinked<>();
+        while(iterator!=null) {
+            vertex = iterator.getData();
+            vertex.setStatus(State.DELETED);
+            //printStatus();
+            articulationExists = BFSArticulated();
+            iterator = iterator.getLink();
+            //printStatus();
+            restoreVertexStatus();
+            if(articulationExists)
+                list.add(vertex);
+        }
+        return list;
     }
 
     public void DFSTimed() {
@@ -207,7 +268,7 @@ public class Graph {
             iterator = iterator.getLink();
         }
     }
-/*
+
     public void printTimes() {
         Node<Vertex> node = vertexList.getHead();
         Vertex vertex;
@@ -217,7 +278,7 @@ public class Graph {
             node = node.getLink();
         }
     }
-*/
+
     public void printGraph()
     {
         ListLinked<Edge> edgesVertex = new ListLinked<>();
