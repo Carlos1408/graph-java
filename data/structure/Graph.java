@@ -317,6 +317,17 @@ public class Graph {
         
     }
 
+    public void dijkstra() {
+        Node<Vertex> iterator = vertexList.getHead();
+        isConnected = false;
+        while(iterator != null) {
+            Vertex vertex = iterator.getData();
+            if(vertex.getState().compareTo(State.NOT_VISITED) == 0)
+                dijkstra(vertex);
+            iterator = iterator.getLink();
+        }
+    }
+
     public void printDijkstra() {
         Node<Vertex> node = vertexList.getHead();
         Vertex vertex;
