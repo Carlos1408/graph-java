@@ -35,7 +35,7 @@ public class ListLinked<E> {
         size++;
     }
 
-    public void add(E data)
+    /*public void add(E data)
     {
         Node<E> node = new Node<>(data);
         if (isEmpty()) {
@@ -45,12 +45,28 @@ public class ListLinked<E> {
         }
         tail = node;
         size++;
+    }*/
+
+    public void add(E data) {
+        Node<E> node = new Node<>(data);
+        Node<E> iterator = head;
+        if (isEmpty()) {
+            head = node;
+        } else {
+            while(iterator.getLink()!=null)
+                iterator = iterator.getLink();
+            iterator.setLink(node);
+        }
+        tail = node;
+        size++;
     }
 
     public void removeHead()
     {
         if(!isEmpty())
             head = head.getLink();
+        else
+            head = null;
     }
 
     public void removeTail()

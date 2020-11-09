@@ -279,6 +279,94 @@ public class Graph {
         }
     }
 
+    public void dijkstra(Vertex vertex) {
+        ListLinked<Vertex> priorityList = new ListLinked<>();
+        vertex.setStatus(State.VISITED);
+        vertex.setDistance(0);
+        vertex.setParent(null);
+        priorityList.add(vertex);
+        while(!priorityList.isEmpty()) {
+            //printPriorityList(priorityList);
+
+            vertex = getMinimunVertexAcumulated(priorityList);
+/*
+            if(vertex.getParent()==null)
+                System.out.println(" =>"+vertex.getLabel()+"["+vertex.getDistance()+", null]"+"");
+            else
+                System.out.println(" =>"+vertex.getLabel()+"["+vertex.getDistance()+", "+vertex.getParent().getLabel()+"]"+"");
+*/
+            ListLinked<Edge> lEdges = vertex.getEdges();
+            Node<Edge> node = lEdges.getHead();
+            while(node!=null) {
+                Vertex opposite = node.getData().getV2();
+                if(opposite.getState().compareTo(State.NOT_VISITED)==0) {
+                    opposite.setStatus(State.VISITED);
+                    opposite.setParent(vertex);
+                    opposite.setDistance(vertex.getDistance()+node.getData().getWeight());
+                    priorityList.add(opposite);
+/*
+                    if(opposite.getParent()==null)
+                        System.out.println(opposite.getLabel()+"["+opposite.getDistance()+", null]"+"");
+                    else
+                        System.out.println(opposite.getLabel()+"["+opposite.getDistance()+", "+opposite.getParent().getLabel()+"]"+"");
+*/                        
+                }
+                node = node.getLink();
+            }
+        }
+        
+    }
+
+    public void printDijkstra() {
+        Node<Vertex> node = vertexList.getHead();
+        Vertex vertex;
+        while(node != null) {
+            vertex = node.getData();
+            if(vertex.getParent()==null)
+                System.out.println("Vertex: "+vertex.getLabel()+" [Distance: "+vertex.getDistance()+", Parent: null]");
+            else
+                System.out.println("Vertex: "+vertex.getLabel()+" [Distance: "+vertex.getDistance()+"; Parent: "+vertex.getParent().getLabel()+"]");
+            node = node.getLink();
+        }
+    }
+
+    private void printPriorityList(ListLinked<Vertex> list) {
+        Node<Vertex> node = list.getHead();
+        Vertex vertex;
+        System.out.println("\n");
+        while(node != null) {
+            vertex = node.getData();
+                System.out.print(vertex.getLabel()+" | ");
+            node = node.getLink();
+        }
+    }
+
+    private Vertex getMinimunVertexAcumulated(ListLinked<Vertex> list) {
+        Node<Vertex> node = list.getHead();
+        Vertex vertex = node.getData();
+        Node<Vertex> previous = null;
+        Vertex vertexMin = vertex;
+        while(node!=null) {
+            vertex = node.getData();
+            if(vertexMin.getDistance()>vertex.getDistance())
+                vertexMin = vertex;
+            node = node.getLink();
+        }
+        node = list.getHead();
+        while(node!=null) {
+            if(node.getData() == vertexMin) {
+                if(node == list.getHead())
+                    list.removeHead();
+                else {
+                    previous.setLink(node.getLink());
+                }
+            }
+            previous = node;
+            node = node.getLink();
+        }
+        return vertexMin;
+    }
+
     public void printGraph()
     {
         ListLinked<Edge> edgesVertex = new ListLinked<>();

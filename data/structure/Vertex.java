@@ -8,6 +8,7 @@ public class Vertex {
     private Vertex parent;
     private int timeIn;
     private int timeOut;
+    private double distance;
     
     public Vertex(String label)
     {
@@ -15,6 +16,14 @@ public class Vertex {
         edges = new ListLinked<>();
         this.jumps = 0;
         this.state = State.NOT_VISITED;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getDistance() {
+        return distance;
     }
 
     public void setTimeIn(int time) {
