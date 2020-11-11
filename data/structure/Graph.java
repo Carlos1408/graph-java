@@ -137,15 +137,16 @@ public class Graph {
         }
         
         iterator = travelDFS.getHead();
-        while(iterator != null) {
+        /*while(iterator != null) {
             Vertex vertex = iterator.getData();
             System.out.print(vertex.getLabel()+"{"+vertex.getTimeIn()+"; "+vertex.getTimeOut()+"}-> ");
             iterator = iterator.getLink();
-        }
+        }*/
     }
 
     public void DFS_Recursive(Vertex vertex, ListLinked<Vertex> travelDFS) {
         vertex.setStatus(State.VISITED);
+        vertex.setAncestor(vertex);
         travelDFS.add(vertex);
         ListLinked<Edge> lEdges = vertex.getEdges();
         vertex.setTimeIn(time);
@@ -159,7 +160,7 @@ public class Graph {
                 DFS_Recursive(opposite, travelDFS);
             } else if(vertex.getParent()!=null && vertex.getParent()!=opposite) {
                 node.getData().setType(Type.LATER);
-                if(opposite.getTimeIn()<vertex.getAncestor().getTimeIn())
+                if(opposite.getTimeIn() < vertex.getAncestor().getTimeIn())
                     vertex.setAncestor(opposite);
             }
             node = node.getLink();
@@ -168,21 +169,20 @@ public class Graph {
         vertex.setTimeOut(time);
         time++;
         if(vertex.getParent()!=null) {
-            if(vertex.getAncestor()==vertex.getParent())
-                vertex.getParent().setType(Type.PARENT_CUT_NODE);
+            if(vertex.getAncestor() == vertex.getParent())
+                vertex.setType(Type.PARENT_CUT_NODE);
 
+            if(vertex.getAncestor() == vertex) {
+                vertex.getParent().setType(Type.BRIDGE_CUT_NODE);
+        
+                if(vertex.getSonsNumber()>0)
+                    vertex.setType(Type.BRIDGE_CUT_NODE);
+            }
             if(vertex.getAncestor().getTimeIn() < vertex.getParent().getAncestor().getTimeIn())
                 vertex.getParent().setAncestor(vertex.getAncestor());
 
         } else if(vertex.getSonsNumber()>1)
             vertex.setType(Type.ROOT_CUT_NODE);
-
-        else if(vertex.getAncestor() == vertex) {
-            vertex.getParent().setType(Type.BRIDGE_CUT_NODE);
-
-            if(vertex.getSonsNumber()>0)
-                vertex.setType(Type.BRIDGE_CUT_NODE);
-        }
     }
 
     public void DFS_Stack(Vertex vertex, ListLinked<Vertex> travelDFS) {
