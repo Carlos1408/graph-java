@@ -15,14 +15,14 @@ public class TestArticulation {
         node = articulations.getHead();
         while(node!=null) {
             System.out.print("\nVertice articulado: "+node.getData().getLabel()+" -> Conexiones: ");
-            graph.printVertexConections(node.getData());
+            //graph.printVertexConections(node.getData());
             node = node.getLink();
         }
 
         System.out.println("\n");
 
         graph = new Graph(false);
-        graph.readFileInput("Grafo3.txt");
+        graph.readFileInput("GrafoDFS.txt");
         articulations = graph.getVertexArticulationList();
         node = articulations.getHead();
         while(node!=null) {

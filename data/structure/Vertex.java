@@ -9,13 +9,42 @@ public class Vertex {
     private int timeIn;
     private int timeOut;
     private double distance;
+    private int sonsNumber;
+    private Type type;
+    private Vertex ancestor;
     
     public Vertex(String label)
     {
         this.label = label;
-        edges = new ListLinked<>();
+        this.edges = new ListLinked<>();
         this.jumps = 0;
         this.state = State.NOT_VISITED;
+        this.sonsNumber=0;
+        this.type = Type.NONE;
+    }
+
+    public void setAncestor(Vertex vertex) {
+        ancestor = vertex;
+    }
+
+    public Vertex getAncestor() {
+        return ancestor;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setSonsNumber(int sonsNumber) {
+        this.sonsNumber = sonsNumber;
+    }
+
+    public int getSonsNumber() {
+        return sonsNumber;
     }
 
     public void setDistance(double distance) {
