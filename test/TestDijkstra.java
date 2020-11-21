@@ -1,6 +1,6 @@
 package test;
 
-import data.structure.Graph;
+import data.structure.*;
 
 public class TestDijkstra {
     public static void main(String[] args) {
