@@ -12,6 +12,7 @@ public class Vertex {
     private int sonsNumber;
     private Type type;
     private Vertex ancestor;
+    private Color color;
     
     public Vertex(String label)
     {
@@ -19,8 +20,18 @@ public class Vertex {
         this.edges = new ListLinked<>();
         this.jumps = 0;
         this.state = State.NOT_VISITED;
-        this.sonsNumber=0;
+        this.sonsNumber = 0;
         this.type = Type.NONE;
+        this.color = Color.NONE;
+        this.parent = null;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return this.color;
     }
 
     public void setAncestor(Vertex vertex) {

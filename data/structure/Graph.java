@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-//import java.util.Stack;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,6 +82,8 @@ public class Graph {
         {
             //vertex = queue.remove().getData();
             vertex = queue.poll();
+            if(vertex.getColor()==Color.NONE)
+                vertex.setColor(Color.BLUE);
             ListLinked<Edge> lEdges = vertex.getEdges();
             Node<Edge> node = lEdges.getHead();
             while(node!=null)
@@ -89,6 +91,8 @@ public class Graph {
                 Vertex opposite = node.getData().getV2();
                 if(opposite.getState() == State.NOT_VISITED)
                 {
+                    if(vertex.getColor()==Color.BLUE && opposite.getColor()==Color.NONE)
+                        opposite.setColor(Color.RED);
                     queue.add(opposite);
                     opposite.setStatus(State.VISITED);
                     opposite.setJumps(vertex.getJumps()+1);
@@ -115,12 +119,27 @@ public class Graph {
         }
     }
 
-    public void shortPath(Vertex start, Vertex finish) {
-        BFS(start);
-        Vertex parent = finish.getParent();
-        while(parent != start.getParent()) {
-            System.out.print(parent.getLabel()+"{"+parent.getJumps()+"} ");
-            parent = parent.getParent();
+    public void paintGraph() {
+        BFS();
+        printVertexColor();
+    }
+
+    public void shortPath(Vertex finish, Vertex start) {
+        dijkstra(start);
+        //BFS(start);
+        //Stack<Vertex> path = new Stack<>();
+        ListLinked<Vertex> path = new ListLinked<>();
+        Vertex vertex = finish;
+        while(vertex!=null) {
+            path.add(vertex);
+            vertex = vertex.getParent();
+        }
+        Node<Vertex> iterator = path.getHead();
+        while(iterator != null) {
+            vertex = iterator.getData();
+            //vertex = path.pop();
+            System.out.print("Vertex["+vertex.getLabel() + "] Distance[" + vertex.getDistance() + "] -> ");
+            iterator = iterator.getLink();
         }
     }
 
@@ -156,6 +175,7 @@ public class Graph {
             Vertex opposite = node.getData().getV2();
             if(opposite.getState() == State.NOT_VISITED) {
                 vertex.setSonsNumber(vertex.getSonsNumber()+1);
+                node.getData().setType(Type.TREE);
                 opposite.setParent(vertex);
                 DFS_Recursive(opposite, travelDFS);
             } else if(vertex.getParent()!=null && vertex.getParent()!=opposite) {
@@ -274,6 +294,14 @@ public class Graph {
         Node<Vertex> iterator = vertexList.getHead();
         while(iterator!=null) {
             System.out.println(iterator.getData().getLabel()+"{"+iterator.getData().getType()+"}");
+            iterator = iterator.getLink();
+        }
+    }
+
+    public void printVertexColor() {
+        Node<Vertex> iterator = vertexList.getHead();
+        while(iterator!=null) {
+            System.out.println(iterator.getData().getLabel()+"["+iterator.getData().getColor()+"]");
             iterator = iterator.getLink();
         }
     }
